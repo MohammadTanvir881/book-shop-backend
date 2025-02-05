@@ -6,6 +6,7 @@ import config from "../../config";
 import mongoose from "mongoose";
 import app from "../../../app";
 import { Order } from "./orders.model";
+import catchAsync from "../utlis/catchAsync";
 // import { totalRevenueIncome } from "./revenue";
 
 const store_id = config.store_id;
@@ -13,6 +14,16 @@ const store_passwd = config.store_password;
 const is_live = false; //true for live, false for sandbox
 
 const tran_id = new mongoose.Types.ObjectId().toString();
+
+const getAllOrders = catchAsync(async (req, res) => {
+  const result = await orderServices.getAllOrdersFromDb();
+  res.status(200).json({
+    success: true,
+    statusCode: 200,
+    message: "Orders Retrieved Successfully",
+    data: result,
+  });
+});
 
 const createOrder = async (req: Request, res: Response) => {
   try {
@@ -93,9 +104,7 @@ const createOrder = async (req: Request, res: Response) => {
         tranjectionId: req.params.tranId,
       });
       if (result.deletedCount > 0) {
-        res.redirect(
-          `http://localhost:5173/payment/fail/${req.params.tranId}`
-        );
+        res.redirect(`http://localhost:5173/payment/fail/${req.params.tranId}`);
       }
     });
 
@@ -112,6 +121,29 @@ const createOrder = async (req: Request, res: Response) => {
     });
   }
 };
+
+const updateOrder = catchAsync(async (req, res) => {
+  const { orderId } = req.params;
+
+  const result = await orderServices.updateOrderIntoDb(orderId);
+  res.status(200).json({
+    success: true,
+    statusCode: 200,
+    message: "Orders Updated Successfully",
+    data: result,
+  });
+});
+
+const deleteOrder = catchAsync(async (req, res) => {
+  const {orderId} = req.params;
+  const result = await orderServices.deleteOrderIntoDb(orderId);
+  res.status(200).json({
+    success: true,
+    statusCode: 200,
+    message: "Orders Deleted Successfully",
+    data: result,
+  });
+});
 
 const getRevenue = async (req: Request, res: Response) => {
   try {
@@ -135,4 +167,7 @@ const getRevenue = async (req: Request, res: Response) => {
 export const orderController = {
   createOrder,
   getRevenue,
+  getAllOrders,
+  updateOrder,
+  deleteOrder,
 };

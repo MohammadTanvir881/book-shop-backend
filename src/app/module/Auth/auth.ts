@@ -30,6 +30,7 @@ const auth = (...requiredRoles: TUserRole[]) => {
 
     const { userEmail, role } = decoded;
 
+
     const user = await User.findOne({ email: userEmail });
     if (!user) {
       throw new AppError(404, "User Not Found");
