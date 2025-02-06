@@ -8,7 +8,12 @@ import globalErrorHandler from "./app/middleWare/globalErrorHandler";
 import config from "./app/config";
 const app = express();
 
-app.use(cors({ origin: ["http://localhost:5173"], credentials: true }));
+app.use(
+  cors({
+    origin: ["http://localhost:5173", "https://book-shop-as.vercel.app"],
+    credentials: true,
+  })
+);
 app.use(cookieParser());
 app.use(express.json());
 app.use("/api", router);
@@ -16,8 +21,6 @@ app.use("/api", router);
 app.get("/", (req: Request, res: Response) => {
   res.send("Hello");
 });
-
-
 
 app.use(globalErrorHandler);
 

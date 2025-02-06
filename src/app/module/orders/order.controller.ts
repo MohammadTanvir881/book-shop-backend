@@ -94,7 +94,7 @@ const createOrder = async (req: Request, res: Response) => {
       );
       if (result.modifiedCount > 0) {
         res.redirect(
-          `http://localhost:5173/payment/success/${req.params.tranId}`
+          `https://book-shop-as.vercel.app/payment/success/${req.params.tranId}`
         );
       }
     });
@@ -104,7 +104,7 @@ const createOrder = async (req: Request, res: Response) => {
         tranjectionId: req.params.tranId,
       });
       if (result.deletedCount > 0) {
-        res.redirect(`http://localhost:5173/payment/fail/${req.params.tranId}`);
+        res.redirect(`https://book-shop-as.vercel.app/payment/fail/${req.params.tranId}`);
       }
     });
 
