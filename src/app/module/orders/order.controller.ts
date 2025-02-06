@@ -33,7 +33,7 @@ const createOrder = async (req: Request, res: Response) => {
       currency: "BDT",
       tran_id: tran_id, // use unique tran_id for each api call
       success_url: `https://assignment-2-blond-gamma.vercel.app/payment/success/${tran_id}`,
-      fail_url: `https://assignment-2-blond-gamma.vercel.app//payment/fail/${tran_id}`,
+      fail_url: `https://assignment-2-blond-gamma.vercel.app/payment/fail/${tran_id}`,
       cancel_url: "http://localhost:3030/cancel",
       ipn_url: "http://localhost:3030/ipn",
       shipping_method: "Courier",
