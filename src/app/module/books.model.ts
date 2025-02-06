@@ -9,6 +9,7 @@ const booksSchema = new Schema<TBooks>(
     },
     bookImage : {
       type : String,
+      required : [true , "Book Image is required"]
     },
     author: {
       type: String,

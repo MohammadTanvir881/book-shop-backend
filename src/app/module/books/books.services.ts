@@ -85,13 +85,13 @@ const getSingleBookDataFromDb = async (id: string) => {
 
 // create a new book data in DB
 
-const createBookDataIntoDB = async (file: any, books: TBooks) => {
+const createBookDataIntoDB = async ( books: TBooks) => {
   //send image to cloudinary
   const imageName = `${books?.title}-${books?.author}`;
-  const path = file?.path;
-  const { secure_url }: any = await sendImageToCloudinary(imageName, path);
+  // const path = file?.path;
+  // const { secure_url }: any = await sendImageToCloudinary(imageName, path);
 
-  books.bookImage = secure_url;
+  // books.bookImage = secure_url;
 
   const result = await Book.create(books);
   return result;

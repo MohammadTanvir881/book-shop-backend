@@ -1,7 +1,7 @@
 export type TBooks = {
   title: string;
   author: string;
-  bookImage?: string;
+  bookImage: string;
   price: number;
   category: string;
   description: string;

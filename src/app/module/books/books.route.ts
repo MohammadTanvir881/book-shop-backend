@@ -10,12 +10,13 @@ const router = express.Router();
 router.post(
   "/",
   auth("admin"),
-  upload.single("file"),
-  (req : Request , res : Response , next : NextFunction)=>{
-     req.body = JSON.parse(req.body.data);
-     next()
-  },
-    validateRequest(booksZodValidationSchema),
+  // upload.single("file"),
+  // (req: Request, res: Response, next: NextFunction) => {
+  //   req.body = JSON.parse(req.body.data);
+  //   console.log("from backend", req.body);
+  //   next();
+  // },
+  validateRequest(booksZodValidationSchema),
   booksController.createBookData
 );
 router.get("/", booksController.getBooksData);
