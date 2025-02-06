@@ -90,6 +90,7 @@ const createOrder = async (req: Request, res: Response) => {
           },
         }
       );
+      console.log(result);
       if (result.modifiedCount > 0) {
         res.redirect(
           `https://book-shop-as.vercel.app/payment/success/${req.params.tranId}`
