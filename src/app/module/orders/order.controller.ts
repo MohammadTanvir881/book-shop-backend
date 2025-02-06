@@ -8,12 +8,10 @@ import app from "../../../app";
 import { Order } from "./orders.model";
 import catchAsync from "../utlis/catchAsync";
 // import { totalRevenueIncome } from "./revenue";
-
+const tran_id = new mongoose.Types.ObjectId().toString();
 const store_id = config.store_id;
 const store_passwd = config.store_password;
 const is_live = false; //true for live, false for sandbox
-
-const tran_id = new mongoose.Types.ObjectId().toString();
 
 const getAllOrders = catchAsync(async (req, res) => {
   const result = await orderServices.getAllOrdersFromDb();
@@ -28,14 +26,14 @@ const getAllOrders = catchAsync(async (req, res) => {
 const createOrder = async (req: Request, res: Response) => {
   try {
     const order = req.body;
-    // console.log(order);
+    console.log(order);
 
     const data = {
       total_amount: order.totalPrice,
       currency: "BDT",
       tran_id: tran_id, // use unique tran_id for each api call
-      success_url: `https://book-shop-as.vercel.app/payment/success/${tran_id}`,
-      fail_url: `https://book-shop-as.vercel.app/payment/fail/${tran_id}`,
+      success_url: `https://assignment-2-blond-gamma.vercel.app/payment/success/${tran_id}`,
+      fail_url: `https://assignment-2-blond-gamma.vercel.app//payment/fail/${tran_id}`,
       cancel_url: "http://localhost:3030/cancel",
       ipn_url: "http://localhost:3030/ipn",
       shipping_method: "Courier",
@@ -75,7 +73,7 @@ const createOrder = async (req: Request, res: Response) => {
         tranjectionId: tran_id,
       };
 
-      // console.log(finalOrder)
+      console.log(finalOrder);
 
       const result = orderServices.createOrderIntoDB(finalOrder);
 
@@ -104,7 +102,9 @@ const createOrder = async (req: Request, res: Response) => {
         tranjectionId: req.params.tranId,
       });
       if (result.deletedCount > 0) {
-        res.redirect(`https://book-shop-as.vercel.app/payment/fail/${req.params.tranId}`);
+        res.redirect(
+          `https://book-shop-as.vercel.app/payment/fail/${req.params.tranId}`
+        );
       }
     });
 
@@ -135,7 +135,7 @@ const updateOrder = catchAsync(async (req, res) => {
 });
 
 const deleteOrder = catchAsync(async (req, res) => {
-  const {orderId} = req.params;
+  const { orderId } = req.params;
   const result = await orderServices.deleteOrderIntoDb(orderId);
   res.status(200).json({
     success: true,
