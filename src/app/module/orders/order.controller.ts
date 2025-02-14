@@ -90,10 +90,9 @@ const createOrder = async (req: Request, res: Response) => {
           },
         }
       );
-      console.log(result);
       if (result.modifiedCount > 0) {
         res.redirect(
-          `https://book-shop-as.vercel.app/payment/success/${req.params.tranId}`
+          `https://book-shop-five-xi.vercel.app/payment/success/${req.params.tranId}`
         );
       }
     });
@@ -104,7 +103,7 @@ const createOrder = async (req: Request, res: Response) => {
       });
       if (result.deletedCount > 0) {
         res.redirect(
-          `https://book-shop-as.vercel.app/payment/fail/${req.params.tranId}`
+          `https://book-shop-five-xi.vercel.app/payment/fail/${req.params.tranId}`
         );
       }
     });
