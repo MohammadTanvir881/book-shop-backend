@@ -32,9 +32,9 @@ const createOrder = async (req: Request, res: Response) => {
       total_amount: order.totalPrice,
       currency: "BDT",
       tran_id: tran_id, // use unique tran_id for each api call
-      success_url: `https://assignment-2-blond-gamma.vercel.app/payment/success/${tran_id}`,
-      fail_url: `https://assignment-2-blond-gamma.vercel.app/payment/fail/${tran_id}`,
-      cancel_url: "http://localhost:3030/cancel",
+      success_url: `http://localhost:5000/api/orders/success/${tran_id}`,
+      fail_url: `http://localhost:5000/api/orders/fail/${tran_id}`,
+      cancel_url: `http://localhost:5000/api/orders/success/${tran_id}`,
       ipn_url: "http://localhost:3030/ipn",
       shipping_method: "Courier",
       product_name: "Computer.",
@@ -80,39 +80,6 @@ const createOrder = async (req: Request, res: Response) => {
       console.log("Redirecting to: ", GatewayPageURL);
     });
 
-    app.post("/payment/success/:tranId", async (req, res) => {
-      console.log(req.params.tranId);
-      const result = await Order.updateOne(
-        { tranjectionId: req.params.tranId },
-        {
-          $set: {
-            paidStatus: true,
-          },
-        }
-      );
-      if (result.modifiedCount > 0) {
-        res.redirect(
-          `https://book-shop-five-xi.vercel.app/payment/success/${req.params.tranId}`
-        );
-      }
-    });
-    app.post("/payment/fail/:tranId", async (req, res) => {
-      console.log(req.params.tranId);
-      const result = await Order.deleteOne({
-        tranjectionId: req.params.tranId,
-      });
-      if (result.deletedCount > 0) {
-        res.redirect(
-          `https://book-shop-five-xi.vercel.app/payment/fail/${req.params.tranId}`
-        );
-      }
-    });
-
-    // res.status(200).json({
-    //   message: "Order Created Successfully",
-    //   status: true,
-    //   res: result,
-    // });
   } catch (error: any) {
     res.status(500).json({
       message: "Something Went Wrong While Taking Order",
@@ -121,6 +88,40 @@ const createOrder = async (req: Request, res: Response) => {
     });
   }
 };
+
+// Payment success route
+
+const paymentSuccess = catchAsync(async (req, res) => {
+  const { transId } = req.params;
+   console.log("req.params.tranId)", transId);
+  console.log(req.params.tranId);
+  const result = await Order.updateOne(
+    { tranjectionId: req.params.transId },
+    {
+      $set: {
+        paidStatus: true,
+      },
+    }
+  );
+  if (result.modifiedCount > 0) {
+    res.redirect(`http://localhost:5173/payment/success`);
+  }
+});
+
+const paymentFail = catchAsync(async (req, res) => {
+  const { transId } = req.params;
+
+
+  console.log(req.params.transId);
+  const result = await Order.deleteOne({
+    tranjectionId: req.params.transId,
+  });
+  if (result.deletedCount > 0) {
+    res.redirect(`http://localhost:5173/payment/fail`);
+  }
+});
+
+// Payment fail route
 
 const updateOrder = catchAsync(async (req, res) => {
   const { orderId } = req.params;
@@ -166,6 +167,8 @@ const getRevenue = async (req: Request, res: Response) => {
 
 export const orderController = {
   createOrder,
+  paymentSuccess,
+  paymentFail,
   getRevenue,
   getAllOrders,
   updateOrder,

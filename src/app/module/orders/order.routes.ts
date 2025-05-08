@@ -11,6 +11,11 @@ orderRouter.post(
   validateRequest(OrderValidation.orderValidationSchema),
   orderController.createOrder
 );
+
+orderRouter.post("/success/:transId", orderController.paymentSuccess);
+// payment fail route
+orderRouter.post("/fail/:transId", orderController.paymentFail);
+
 orderRouter.get("/revenue", orderController.getRevenue);
 orderRouter.patch(
   "/updateOrder/:orderId",

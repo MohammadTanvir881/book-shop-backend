@@ -5,7 +5,6 @@ const SSLCommerzPayment = require("sslcommerz-lts");
 
 import router from "./app/module/Router/router";
 import globalErrorHandler from "./app/middleWare/globalErrorHandler";
-import config from "./app/config";
 const app = express();
 
 app.use(
